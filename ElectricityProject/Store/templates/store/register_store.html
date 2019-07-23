@@ -1,0 +1,44 @@
+{% extends 'store/blank.html' %}
+{% block title %}
+        <title>您好！ {{ request.COOKIES.username }}欢迎您来访！ - 主页</title>
+    {% endblock %}
+    {% block content %}
+
+        <form class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="store_name" placeholder="店铺名称">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="store_adress" placeholder="店铺地址">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="store_description" placeholder="店铺描述">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="store_id" placeholder="店铺主人">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="store_phone" placeholder="店铺电话">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="store_money" placeholder="注册资金">
+            </div>
+            <div class="form-group btn-block">
+                 <select  class="form-control form-control-user"  name="type" multiple='multiple'>
+                     {% for t in type_list %}
+                         <option value="{{ t.id }}">{{ t.store_type }}</option>
+                     {% endfor %}
+                 </select>
+            </div>
+            <div class="form-group">
+                <input type="file" class="form-control form-control-user"  name="store_logo" placeholder="store_logo">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="submit" id="submit" value="注册店铺" class="btn btn-primary btn-user btn-block">
+            </div>
+
+
+        </form>
+
+    {% endblock %}

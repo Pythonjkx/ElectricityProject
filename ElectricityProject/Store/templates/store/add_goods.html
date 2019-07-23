@@ -1,0 +1,41 @@
+{% extends 'store/blank.html' %}
+{% block title %}
+        <title>您好！ {{ request.COOKIES.username }}欢迎您来访！ - 添加商品</title>
+    {% endblock %}
+    {% block content %}
+
+        <form class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="goods_name" placeholder="商品名称">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="goods_price" placeholder="商品价格">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="goods_number" placeholder="商品库存">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="goods_description" placeholder="商品描述">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="goods_date" placeholder="出厂日期">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="text" class="form-control form-control-user"  name="goods_safeDate" placeholder="保质期(月)">
+            </div>
+
+            <div class="form-group btn-block">
+                <input type="hidden" class="form-control form-control-user"  name="goods_store" value="5">
+            </div>
+            <div class="form-group">
+                <input type="file" class="form-control form-control-user"  name="goods_image" placeholder="商品图片">
+            </div>
+            <div class="form-group btn-block">
+                  <input type="submit" id="submit" value="添加商品" class="btn btn-primary btn-user btn-block">
+            </div>
+
+
+        </form>
+
+    {% endblock %}

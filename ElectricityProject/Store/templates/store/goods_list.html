@@ -1,0 +1,62 @@
+{% extends 'store/blank.html' %}
+
+{% block title %}
+
+    <a class="btn btn-warning">商品列表</a>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>商品名称</th>
+            <th>商品价格 (元)</th>
+            <th>商品数量 (个)</th>
+            <th>生产日期</th>
+            <th>保质期 (月)</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+        {% for g in page %}
+            <tr>
+                <th>{{ g.goods_name }}</th>
+                <th ><input type="text" value="{{ g.goods_price }}"></th>
+                <th>{{ g.goods_number }}</th>
+                <th>{{ g.goods_date }}</th>
+                <th>{{ g.goods_safeDate }}</th>
+                <th>
+                    <a class="btn btn-info" style="color: white;font-family: 黑体;">下架</a>
+                    <a class="btn btn-dark" style="color: white;font-family: 黑体;">销毁</a>
+                </th>
+            </tr>
+        {% endfor %}
+
+    </table>
+    <div class="row ">
+    <div class="col-sm-12 col-md-4">
+            本店共有商品 <b style="color:red;">{{ list_goods }}</b> 种
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <ul class="pagination">
+                 <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ before_page }}">上一页</a>
+                </li>
+            {% for p in page_range %}
+                <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ p }}">{{ p }}</a>
+                </li>
+            {% endfor %}
+                 <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ next_page }}">下一页</a>
+                </li>
+        </ul>
+    </div>
+    <div class="col-sm-12 col-md-4" style="text-align: right">
+             第 {{ page_num }} 页/ 共 {{ page_all }} 页
+    </div>
+    </div>
+
+{% endblock %}
