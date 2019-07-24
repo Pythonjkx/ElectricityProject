@@ -30,7 +30,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -39,18 +39,31 @@
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
-
+     {% if request.COOKIES.has_store %}
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        {% if is_store %}
         <a class="nav-link" href="#">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>店铺管理</span>
+          <span style="color: white">店铺管理</span>
         </a>
+ <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>商品信息</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">商品管理:</h6>
+            <a class="collapse-item" href="/Store/add_goods/">添加商品</a>
+            <a class="collapse-item" href="/Store/goods_list/">商品列表</a>
+          </div>
+        </div>
+      </li>
         {% else %}
+         <li>
         <a class="nav-link" href="/Store/register_store/">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>没有店铺，注册一个</span>
+          <span style="color: white">没有店铺，注册一个 {{  request.COOKIES.has_store }}</span>
         </a>
         {% endif %}
       </li>
@@ -64,20 +77,7 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>商品信息</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">商品管理:</h6>
-            <a class="collapse-item" href="/Store/add_goods/">添加商品</a>
-            <a class="collapse-item" href="/Store/goods_list/">商品列表</a>
-            <a class="collapse-item" href="/Store/goods_list/">商品详情</a>
-          </div>
-        </div>
-      </li>
+
     </ul>
     <!-- End of Sidebar -->
 

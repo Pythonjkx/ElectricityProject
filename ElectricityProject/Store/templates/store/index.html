@@ -2,7 +2,7 @@
 {% block title %}
         <title>您好！ {{ request.COOKIES.username }}欢迎您来访！ - 主页</title>
     {% endblock %}
-{% if request.COOKIES.user_id %}
+
 {% block content %}
       <div id="content">
 
@@ -292,5 +292,5 @@
       </div>
 
     {% endblock %}
-{% endif %}
+
 

@@ -22,18 +22,17 @@
     </tbody>
         {% for g in page %}
             <tr>
-                <th>{{ g.goods_name }}</th>
+                <th><a href="/Store/goods/{{ g.id }}">{{ g.goods_name }}</a></th>
                 <th ><input type="text" value="{{ g.goods_price }}"></th>
                 <th>{{ g.goods_number }}</th>
-                <th>{{ g.goods_date }}</th>
+                <th>{{ g.goods_date|date:'Y-m-d' }}</th>
                 <th>{{ g.goods_safeDate }}</th>
                 <th>
-                    <a class="btn btn-info" style="color: white;font-family: 黑体;">下架</a>
-                    <a class="btn btn-dark" style="color: white;font-family: 黑体;">销毁</a>
+                    <input type="submit" name="sold_out" class="btn btn-info" style="color: white;font-family: 黑体;" value="下架">
+                    <a href="/Store/delete_goods/{{ g.id }}" class="btn btn-dark" style="color: white;">销毁</a>
                 </th>
             </tr>
         {% endfor %}
-
     </table>
     <div class="row ">
     <div class="col-sm-12 col-md-4">
@@ -60,3 +59,4 @@
     </div>
 
 {% endblock %}
+
