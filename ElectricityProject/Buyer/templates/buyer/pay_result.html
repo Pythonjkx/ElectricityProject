@@ -1,0 +1,12 @@
+{% extends 'buyer/base.html' %}
+
+{% block title %}
+    <h1>支付结果</h1>
+{% endblock %}
+
+{% block content %}
+    <h1>恭喜您，支付成功!</h1>
+    <p>{{ request.GET.out_trde_no }}</p>
+    <p>{{ request.GET.total_amount }}</p>
+    <p>{{ request.GET.timestamp }}</p>
+{% endblock %}

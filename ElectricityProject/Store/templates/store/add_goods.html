@@ -26,12 +26,9 @@
             </div>
             <div class="form-group btn-block">
                   <select  class="form-control form-control-user"  name="goods_type" >
-                      <option name="goods_type" value="2">新鲜水果</option>
-                      <option name="goods_type" value="3">海鲜水产</option>
-                      <option name="goods_type" value="4">猪牛羊肉</option>
-                      <option name="goods_type" value="5">禽类蛋品</option>
-                      <option name="goods_type" value="6">新鲜蔬菜</option>
-                      <option name="goods_type" value="7">速冻食品</option>
+                      {% for f in goods_type_list %}
+                      <option name="goods_type" value="{{ f.id }}">{{ f.name }}</option>
+                      {% endfor %}
                   </select>>
             </div>
 
