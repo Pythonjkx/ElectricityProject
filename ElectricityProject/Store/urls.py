@@ -10,9 +10,11 @@ urlpatterns = [
     path('loginOut/',loginOut),
     path('register_store/', register_store),
     path('add_goods/',add_goods),
-    path('goods_list/',goods_list),
+    re_path('goods_list/(?P<state>\w+)',goods_list),
     re_path(r'^goods/(?P<goods_id>\d+)',goods),
     re_path(r'update_goods/(?P<goods_id>\d+)', update_goods),
-    re_path(r'delete_goods/(?P<goods_id>\d+)',delete_goods),
+    re_path(r'set_goods/(?P<state>\w+)/',set_goods),
+    path('goods_list_type/',goods_list_type),
+    re_path(r'delete_type/(?P<state>\w+)',delete_type),
 
 ]

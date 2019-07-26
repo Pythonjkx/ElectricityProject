@@ -55,7 +55,9 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">商品管理:</h6>
             <a class="collapse-item" href="/Store/add_goods/">添加商品</a>
-            <a class="collapse-item" href="/Store/goods_list/">商品列表</a>
+            <a class="collapse-item" href="/Store/goods_list/up/">在售商品列表</a>
+              <a class="collapse-item" href="/Store/goods_list/down/">下架商品列表</a>
+               <a class="collapse-item" href="/Store/goods_list_type/">添加商品类型</a>
           </div>
         </div>
       </li>
@@ -257,7 +259,7 @@
                   登录日志
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="/Store/loginOut/" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   退出
                 </a>
@@ -275,10 +277,12 @@
           <h1 class="h3 mb-4 text-gray-800">{% block label%}{% endblock %}</h1>
         </div>
         <!-- /.container-fluid -->
-        <div class="container">
-            {% block content %}
-            {% endblock %}
+
+          <div class="container">
+     {% block content %}
+        {% endblock %}
         </div>
+
       </div>
       <!-- End of Main Content -->
 
@@ -316,7 +320,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
-          <a class="btn btn-primary" href="/Store/login/">退出</a>
+          <a class="btn btn-primary" href="/Store/loginOut/">退出</a>
         </div>
       </div>
     </div>

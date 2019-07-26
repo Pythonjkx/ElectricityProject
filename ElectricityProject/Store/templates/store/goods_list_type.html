@@ -1,0 +1,63 @@
+{% extends 'store/blank.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block label %}
+    <button class="btn btn-warning" data-toggle="modal" data-target="#myModal">添加商品类型</button>
+{% endblock %}
+{% block content %}
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">添加类型</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form method="post" class="form">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input class="form-control form-control-user" placeholder="类型名称" type="text" name="name">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-control-user " placeholder="类型描述" type="text" name="description">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-control-user" placeholder="类型图片" type="file" name="picture">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">保存类型</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>商品类型名称</th>
+            <th>商品类型描述</th>
+            <th>商品类型图片</th>
+            <th>商品类型操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+        {% for g in goodsTypes %}
+            <tr>
+
+                <td>{{ g.name }}</td>
+                <td>{{ g.description }}</td>
+                <td>{{ g.picture }}</td>
+                <th>
+                    <a href="/Store/delete_type/delete/?id={{ g.id }}" class="btn btn-info" style="color: white;">删除</a>
+                </th>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

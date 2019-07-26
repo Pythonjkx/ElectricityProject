@@ -26,16 +26,25 @@ class Store(models.Model):
 
     type = models.ManyToManyField(to=StoreType,verbose_name='店铺类型')
 
+class GoodsType(models.Model):
+    name = models.CharField(max_length=30,verbose_name='商品类型名称')
+    description = models.TextField(max_length=30,verbose_name='商品类型描述')
+    picture = models.ImageField(upload_to='buyer/images',verbose_name='商品图片')
+
 class Goods(models.Model):
     goods_name = models.CharField(max_length=32,verbose_name="商品名称")
     goods_price = models.FloatField(verbose_name="商品价格")
     goods_image = models.ImageField(upload_to="store/images", verbose_name="商品图片")
     goods_number = models.IntegerField(verbose_name="商品数量库存")
     goods_description = models.TextField(verbose_name="商品描述")
+    goods_under = models.IntegerField(verbose_name='下架',default=1)
     goods_date = models.DateField(verbose_name="出厂日期")
     goods_safeDate = models.IntegerField(verbose_name="保质期")
 
+    goods_type = models.ForeignKey(to=GoodsType,on_delete=models.CASCADE,verbose_name='商品类型')
     store_id = models.ManyToManyField(to=Store,verbose_name="商品店铺")
+
+
 
 class GoodsImg(models.Model):
     img_address = models.ImageField(upload_to="store/images",verbose_name="图片地址")

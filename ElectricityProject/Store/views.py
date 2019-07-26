@@ -131,6 +131,7 @@ def add_goods(request):
         goods_safeDate = request.POST.get('goods_safeDate')
         goods_store = request.POST.get('goods_store')
         goods_image = request.FILES.get('goods_image')
+        goods_type = request.POST.get('goods_type')
 
         goods = Goods()
         goods.goods_name = goods_name
@@ -140,7 +141,9 @@ def add_goods(request):
         goods.goods_date = goods_date
         goods.goods_safeDate = goods_safeDate
         goods.goods_image = goods_image
+        goods.goods_type_id = goods_type
         goods.save()
+
 
         goods.store_id.add(    #数据库多对多数据的添加
             Store.objects.get(id = int(goods_store))
@@ -149,15 +152,20 @@ def add_goods(request):
     return render(request,'store/add_goods.html')
 
 # 商品列表
-def goods_list(request):
+@loginValid
+def goods_list(request,state):
+    if state == 'up':
+        state_num = 1
+    else:
+        state_num = 0
     keywords = request.GET.get('keywords','')#没有搜索关键词默认为空
     page_num = int(request.GET.get('page_num',1))#有跳转的页码是page_num，没有默认为1
     store_id = request.COOKIES.get('has_store')#获取店铺id
     store = Store.objects.filter(id = int(store_id)).first()#获取店铺
     if keywords:
-        goods_list = store.goods_set.filter(goods_name__contains=keywords)#过滤，获取所有包含关键字的内容
+        goods_list = store.goods_set.filter(goods_name__contains = keywords,goods_under = state_num)#过滤，获取所有包含关键字的内容
     else:
-        goods_list = store.goods_set.all()
+        goods_list = store.goods_set.filter(goods_under = state_num)
     paginator = Paginator(goods_list,4)#对goods_list设置一页显示4条数据
     page = paginator.page(int(page_num))#第page_num页的内容
     page_range = paginator.page_range#获取页数范围
@@ -178,6 +186,20 @@ def goods_list(request):
 def goods(request,goods_id):
     goods_data = Goods.objects.filter(id=goods_id).first()
     return render(request,'store/goods.html',locals())
+
+def goods_list_type(request):
+    goodsTypes = GoodsType.objects.all()
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        picture = request.POST.get('picture')
+
+        goodsType = GoodsType()
+        goodsType.name = name
+        goodsType.description = description
+        goodsType.picture = picture
+        goodsType.save()
+    return render(request,'store/goods_list_type.html',locals())
 
 # 修改商品信息
 def update_goods(request,goods_id):
@@ -207,13 +229,37 @@ def update_goods(request,goods_id):
 # 退出
 def loginOut(request):
     response = HttpResponseRedirect('/Store/login/')
-    response.delete_cookie('username')#删除cookie
+    for key in request.COOKIES:
+        response.delete_cookie(key)#删除cookie
     return response
 
+def set_goods(request,state):
+    if state == 'up':
+        state_num = 1
+    else:
+        state_num = 0
+    id = request.GET.get('id')
+    referer = request.META.get('HTTP_REFERER')
+    if id:
+        goods = Goods.objects.filter(id = id).first()
+        if state == 'delete':
+            goods.delete()
+        else:
+            goods.goods_under = state_num
+            goods.save()
+    return HttpResponseRedirect(referer)
 
-def delete_goods(request,goods_id):
-    Goods.objects.filter(id = goods_id).delete()
-    return HttpResponseRedirect('/Store/goods_list/')
+
+def delete_type(request,state):
+    id = request.GET.get('id')
+    referer = request.META.get('HTTP_REFERER')
+    if id:
+        goods_list_type = GoodsType.objects.get(id = id)
+        if state == 'delete':
+            goods_list_type.delete()
+    return HttpResponseRedirect(referer)
+
+
 
 
 

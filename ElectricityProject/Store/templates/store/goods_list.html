@@ -28,8 +28,12 @@
                 <th>{{ g.goods_date|date:'Y-m-d' }}</th>
                 <th>{{ g.goods_safeDate }}</th>
                 <th>
-                    <input type="submit" name="sold_out" class="btn btn-info" style="color: white;font-family: 黑体;" value="下架">
-                    <a href="/Store/delete_goods/{{ g.id }}" class="btn btn-dark" style="color: white;">销毁</a>
+                    {% ifequal state 'up' %}
+                    <a href="/Store/set_goods/down/?id={{ g.id }}" class="btn btn-info" style="color: white;">下架</a>
+                    {% else %}
+                    <a href="/Store/set_goods/up/?id={{ g.id }}" class="btn btn-info" style="color: white;">上架</a>
+                    {% endifequal %}
+                    <a href="/Store/set_goods/delete/?id={{ g.id }}" class="btn btn-dark" style="color: white;">销毁</a>
                 </th>
             </tr>
         {% endfor %}
