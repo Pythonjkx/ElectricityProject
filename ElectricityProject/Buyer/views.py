@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from alipay import AliPay
 from django.shortcuts import HttpResponseRedirect
@@ -104,7 +105,7 @@ def order_pay(request):
     order_string = alipay.api_alipay_trade_page_pay(
         out_trade_no=order_id,
         total_amount=str(money),
-        subject='python课程',
+        subject='良心铺子百货大全',
         return_url='http://127.0.0.1:8000/Buyer/pay_result/',
         notify_url='http://127.0.0.1:8000/Buyer/pay_result/',
     )
@@ -115,6 +116,11 @@ def pay_result(request):
 
 
 def goods_detail(request,good_id):
-    order_id = random.randint(100000,1000000000000)
-    goods_data = Goods.objects.filter(id = int(good_id),goods_under=1).first()
+    order_id = random.randint(100000, 1000000000000)
+    goods_data = Goods.objects.filter(id=int(good_id), goods_under=1).first()
     return render(request, 'buyer/goods_detail.html', locals())
+
+# def ajax_add(request):
+#     result = {'status':'erros','content':''}
+#
+#     return JsonResponse(result)
