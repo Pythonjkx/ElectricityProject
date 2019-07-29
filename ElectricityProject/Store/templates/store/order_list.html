@@ -1,0 +1,67 @@
+{% extends 'store/blank.html' %}
+
+{% block title %}
+
+    <a class="btn btn-warning">商品列表</a>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+    {% csrf_token %}
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>订单编号</th>
+            <th>订单商品</th>
+            <th>商品单价</th>
+            <th>订单金额</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+
+        {% for g in order_list %}
+            <tr>
+                <th >{{ g.order_id.order_id }}</th>
+                <th>{{ g.goods_name }}</th>
+                <th>{{ g.goods_price }}</th>
+                <th>{{ g.goods_total }}</th>
+                <th>
+                    <input type="hidden" name="order_id" value="{{ g.order_id.order_id }}">
+                    <a href="/Store/set_order/ok/?order_id={{ g.order_id.order_id }}" class="btn btn-primary">确认发货</a>
+                    <a href="/Store/set_order/no/?order_id={{ g.order_id.order_id }}" class="btn btn-danger">拒绝发货</a>
+                    <a href="/Store/set_order/delete/" class="btn btn-primary">删除订单</a>
+                </th>
+            </tr>
+        {% endfor %}
+
+    </table>
+    </form>
+    <div class="row ">
+    <div class="col-sm-12 col-md-4">
+            本店共有商品 <b style="color:red;">{{ list_goods }}</b> 种
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <ul class="pagination">
+                 <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ before_page }}">上一页</a>
+                </li>
+            {% for p in page_range %}
+                <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ p }}">{{ p }}</a>
+                </li>
+            {% endfor %}
+                 <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ next_page }}">下一页</a>
+                </li>
+        </ul>
+    </div>
+    <div class="col-sm-12 col-md-4" style="text-align: right">
+             第 {{ page_num }} 页/ 共 {{ page_all }} 页
+    </div>
+    </div>
+
+{% endblock %}
+

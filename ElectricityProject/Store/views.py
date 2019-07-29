@@ -1,6 +1,7 @@
 import hashlib
 
-from  Store.models import * #导入数据模型
+from Store.models import * #导入数据模型
+from Buyer.models import *
 from django.shortcuts import render
 from django.core.paginator import Paginator #导入页码模块
 from django.http import HttpResponseRedirect,JsonResponse
@@ -143,13 +144,9 @@ def add_goods(request):
         goods.goods_safeDate = goods_safeDate
         goods.goods_image = goods_image
         goods.goods_type = GoodsType.objects.get(id = int(goods_type))
+        goods.store_id = Store.objects.get(id=int(goods_store))
         goods.save()
-
-
-        goods.store_id.add(    #数据库多对多数据的添加
-            Store.objects.get(id = int(goods_store))
-        )
-        goods.save()
+        return HttpResponseRedirect('/Store/goods_list/up/')
     return render(request,'store/add_goods.html',locals())
 
 # 商品列表
@@ -286,6 +283,33 @@ def ajax(request):
         result['content'] = '用户名不可为空'
     return JsonResponse(result)
 
+def order_list(request):
+    store_id = request.COOKIES.get('has_store')
+    order_list = OrderDetail.objects.filter(order_id__order_status = 1,goods_store = store_id)
+    return render(request,'store/order_list.html',locals())
+
+
+def order_result(request):
+    id = request.GET.get('order_id')
+    store_id = request.COOKIES.get('has_store')
+    order_list = OrderDetail.objects.filter(order_id__order_status=2 or 3, goods_store=store_id)
+    return render(request, 'store/order_result.html', locals())
+
+def delete_order(request):
+    order_id = request.GET.get('order_id')
+    order = Order.objects.get(order_id=order_id)
+    order.delete()
+    return HttpResponseRedirect('/Store/order_result/')
+def set_order(request,states):
+    if states == 'ok':
+        states_num = 2
+    else:
+        states_num = 0
+    id = request.POST.get('order_id')
+    order = Order.objects.filter(order_id=id).first()
+    order.order_status = states_num
+    order.save()
+    return HttpResponseRedirect('/Store/order_result/')
 
 
 def page404(request):

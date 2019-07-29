@@ -6,7 +6,8 @@ urlpatterns = [
     path('index/',index),
     path('loginOut/', loginOut),
     path('goods_list/',goods_list),
-    re_path(r'goods_detail/(?P<good_id>\d+)',goods_detail)
+    re_path(r'goods_detail/(?P<good_id>\d+)',goods_detail),
+    path('place_order/',place_order)
 ]
 
 urlpatterns += [

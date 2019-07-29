@@ -1,0 +1,64 @@
+{% extends 'store/blank.html' %}
+
+{% block title %}
+
+    <a class="btn btn-warning">商品列表</a>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>订单编号</th>
+            <th>订单商品</th>
+            <th>商品单价</th>
+            <th>订单金额</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+
+
+        {% for g in order_list %}
+            <tr>
+                <th >{{ g.order_id.order_id }}</th>
+                <th>{{ g.goods_name }}</th>
+                <th>{{ g.goods_price }}</th>
+                <th>{{ g.goods_total }}</th>
+                <th>
+
+                    <a href="#" class="btn btn-warning">待发货</a>
+                    <a href="/Store/delete_order/?order_id={{ g.order_id.order_id }}" class="btn btn-primary">删除订单</a>
+                </th>
+            </tr>
+        {% endfor %}
+
+    </table>
+    <div class="row ">
+    <div class="col-sm-12 col-md-4">
+            本店共有商品 <b style="color:red;">{{ list_goods }}</b> 种
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <ul class="pagination">
+                 <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ before_page }}">上一页</a>
+                </li>
+            {% for p in page_range %}
+                <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ p }}">{{ p }}</a>
+                </li>
+            {% endfor %}
+                 <li>
+                    <a class="page-link" href="?keywords={{ keywords }}&page_num={{ next_page }}">下一页</a>
+                </li>
+        </ul>
+    </div>
+    <div class="col-sm-12 col-md-4" style="text-align: right">
+             第 {{ page_num }} 页/ 共 {{ page_all }} 页
+    </div>
+    </div>
+
+{% endblock %}
+

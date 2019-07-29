@@ -6,7 +6,7 @@ from django.shortcuts import HttpResponseRedirect
 from Store.views import setPassword
 from Buyer.models import *
 from Store.models import *
-import random
+import time
 # Create your views here.
 
 def base(request):
@@ -48,6 +48,7 @@ def login(request):
                 if web_password == buyer.password:
                     response = HttpResponseRedirect('/Buyer/index/')
                     response.set_cookie('username',username)
+                    response.set_cookie('user_id', buyer.id)
                     request.session['username'] = buyer.username
                     return response
     return render(request,'buyer/login.html')
@@ -109,18 +110,55 @@ def order_pay(request):
         return_url='http://127.0.0.1:8000/Buyer/pay_result/',
         notify_url='http://127.0.0.1:8000/Buyer/pay_result/',
     )
+    order = Order.objects.get(order_id=order_id)
+    order.order_status = 2
+    order.save()
     return HttpResponseRedirect('https://openapi.alipaydev.com/gateway.do?' + order_string)
 
 def pay_result(request):
     return render(request,'buyer/pay_result.html',locals())
 
-
+@loginValid
 def goods_detail(request,good_id):
-    order_id = random.randint(100000, 1000000000000)
     goods_data = Goods.objects.filter(id=int(good_id), goods_under=1).first()
     return render(request, 'buyer/goods_detail.html', locals())
 
-# def ajax_add(request):
-#     result = {'status':'erros','content':''}
-#
-#     return JsonResponse(result)
+def setOrder(user_id,good_id,store_id):
+    order_id = time.strftime('%Y%m%d%H%M%S',time.localtime())
+    return order_id+str(user_id)+str(good_id)+str(store_id)
+
+def place_order(request):
+    if request.method == 'POST':
+        count = int(request.POST.get('count'))
+        good_id = request.POST.get('good_id')
+        goods = Goods.objects.get(id = good_id)
+        user_id = request.COOKIES.get('user_id')
+        store_id = goods.store_id.id
+        price = goods.goods_price
+
+
+        order = Order()
+        order.order_id=setOrder(str(user_id),str(good_id),str(store_id))
+        order.order_count = count
+        order.order_user = Buyer.objects.get(id = user_id)
+        order.order_price = count*price
+        order.order_status = 1
+        order.save()
+
+        order_detial = OrderDetail()
+        order_detial.order_id = order
+        order_detial.goods_id = good_id
+        order_detial.goods_name = goods.goods_name
+        order_detial.goods_price = goods.goods_price
+        order_detial.goods_number = count
+        order_detial.goods_total = count*goods.goods_price
+        order_detial.goods_store = store_id
+        order_detial.goods_images = goods.goods_image
+        order_detial.save()
+
+        detail = [order_detial]
+        return render(request,'buyer/place_order.html',locals())
+    return HttpResponseRedirect('非法请求')
+
+
+
