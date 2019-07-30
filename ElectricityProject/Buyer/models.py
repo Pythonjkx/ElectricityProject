@@ -1,4 +1,6 @@
 from django.db import models
+# 导入manage模块
+from django.db.models import Manager
 
 # Create your models here.
 class Buyer(models.Model):
@@ -34,3 +36,14 @@ class OrderDetail(models.Model):
     goods_total = models.FloatField(verbose_name='商品总价')
     goods_store = models.IntegerField(verbose_name='商店id')
     goods_images = models.ImageField(verbose_name='商品图片')
+
+
+class Cart(models.Model):
+    goods_name = models.CharField(max_length=30,verbose_name='商品名称')
+    goods_price = models.FloatField(verbose_name='商品价格')
+    goods_total = models.FloatField(verbose_name='商品总价')
+    goods_number = models.IntegerField(verbose_name='商品数量')
+    goods_picture = models.ImageField(upload_to='buyer/images',verbose_name='商品图片')
+    goods_id = models.IntegerField(verbose_name='商品id')
+    goods_store = models.IntegerField(verbose_name='商品的商店id')
+    user_id = models.IntegerField(verbose_name='用户id')

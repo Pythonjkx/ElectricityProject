@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.db.models import Manager
+from django.db.models import Sum,Max,Min,Avg
 from alipay import AliPay
 from django.shortcuts import HttpResponseRedirect
 from Store.views import setPassword
@@ -158,7 +160,86 @@ def place_order(request):
 
         detail = [order_detial]
         return render(request,'buyer/place_order.html',locals())
-    return HttpResponseRedirect('非法请求')
+    else:
+        order_id = request.GET.get('order_id')
+        if order_id:
+            order = Order.objects.get(id = order_id)
+            detail = order.orderdetail_set.all()
+            return render(request,'buyer/place_order.html',locals())
+        else:
+            return HttpResponseRedirect('非法请求')
+
+
+def cart(request):
+    user_id = request.COOKIES.get('user_id')
+    goods_list = Cart.objects.filter(user_id=user_id)
+    if request.method == 'POST':
+        post_data = request.POST
+        cart_data = []
+        for k,v in post_data.items():
+            if k.startswith('goods_'):
+                cart_data.append(Cart.objects.get(id=int(v)))
+        goods_count = len(cart_data)
+        goods_total = sum([int(i.goods_total) for i in cart_data])
+
+        # cart_data = []
+        # for k,v in post_data.items():
+        #     if k.startswith('goods_'):
+        #         cart_data.append(int(v))
+        # cart_goods = Cart.objects.filter(id__in=cart_data).aggregate(Sum('goods_total'))
+        # print(cart_goods)
+
+        order = Order()
+        order.order_id = setOrder(user_id,goods_count,'2')
+
+        order.order_count = goods_count
+        order.order_user = Buyer.objects.get(id = user_id)
+        order.order_price = goods_total
+        order.order_status = 1
+        order.save()
+
+        for detail in cart_data:
+            order_deatil = OrderDetail()
+            order_deatil.order_id = order
+            order_deatil.goods_id = detail.goods_id
+            order_deatil.goods_price = detail.goods_price
+            order_deatil.goods_name = detail.goods_name
+            order_deatil.goods_number = detail.goods_number
+            order_deatil.goods_total = detail.goods_total
+            order_deatil.goods_store = detail.goods_store
+            order_deatil.goods_images =detail.goods_picture
+            order_deatil.save()
+        url = '/Buyer/place_order/?order_id=%s'%order.id
+        return HttpResponseRedirect(url)
+    return render(request,'buyer/cart.html',locals())
+
+def add_cart(request):
+    result = {'state':'error','data':''}
+    if request.method == 'POST':
+        count = int(request.POST.get('count'))
+        goods_id = request.POST.get('goods_id')
+        goods = Goods.objects.get(id=int(goods_id))
+
+        user_id = request.COOKIES.get('user_id')
+
+        cart = Cart()
+        cart.goods_name = goods.goods_name
+        cart.goods_price = goods.goods_price
+        cart.goods_total = count*goods.goods_price
+        cart.goods_number = count
+        cart.goods_picture = goods.goods_image
+        cart.goods_id = goods_id
+        cart.goods_store = goods.store_id.id
+        cart.user_id = user_id
+        cart.save()
+        result['state'] = 'success'
+        result['data'] = '添加成功'
+    else:
+        result['data'] = '请求错误'
+    return JsonResponse(result)
+
+
+
 
 
 

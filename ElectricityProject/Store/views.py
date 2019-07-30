@@ -285,14 +285,14 @@ def ajax(request):
 
 def order_list(request):
     store_id = request.COOKIES.get('has_store')
-    order_list = OrderDetail.objects.filter(order_id__order_status = 1,goods_store = store_id)
+    order_list = OrderDetail.objects.filter(order_id__order_status = 2,goods_store = store_id)
     return render(request,'store/order_list.html',locals())
 
 
 def order_result(request):
     id = request.GET.get('order_id')
     store_id = request.COOKIES.get('has_store')
-    order_list = OrderDetail.objects.filter(order_id__order_status=2 or 3, goods_store=store_id)
+    order_list = OrderDetail.objects.filter(order_id__order_status= 3, goods_store=store_id)
     return render(request, 'store/order_result.html', locals())
 
 def delete_order(request):
@@ -302,10 +302,10 @@ def delete_order(request):
     return HttpResponseRedirect('/Store/order_result/')
 def set_order(request,states):
     if states == 'ok':
-        states_num = 2
+        states_num = 3
     else:
         states_num = 0
-    id = request.POST.get('order_id')
+    id = request.GET.get('order_id')
     order = Order.objects.filter(order_id=id).first()
     order.order_status = states_num
     order.save()
@@ -314,6 +314,7 @@ def set_order(request,states):
 
 def page404(request):
     return render(request,'store/page404.html')
+
 
 
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Manager
 
 # Create your models here.
 class Seller(models.Model):
@@ -26,10 +27,29 @@ class Store(models.Model):
 
     type = models.ManyToManyField(to=StoreType,verbose_name='店铺类型')
 
+
+# import datetime
+# class GoodsTypeManage(Manager):
+#     重写manage方法
+#     def addType(self,name,picture = 'buyer/images/adv01.jpg'):
+#         goods_type = GoodsType()
+#         goods_type.name = name
+#         now = datetime.datetime.now().strftime('%Y-%m-%d')
+#         goods_type.description = '%s-%s'%(now,name)
+#         goods_type.picture = picture
+#         goods_type.save()
+#         return goods_type
+
+
 class GoodsType(models.Model):
     name = models.CharField(max_length=30,verbose_name='商品类型名称')
     description = models.TextField(max_length=30,verbose_name='商品类型描述')
     picture = models.ImageField(upload_to='buyer/images',verbose_name='商品图片')
+
+    # 在模型类中使用manage方法
+    # objects = GoodsTypeManage()
+
+
 
 class Goods(models.Model):
     goods_name = models.CharField(max_length=32,verbose_name="商品名称")

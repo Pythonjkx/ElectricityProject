@@ -1,6 +1,7 @@
 from django.urls import path,re_path
 from Store.views import *
 urlpatterns = [
+
     path('register/', register),
     path('login/', login),
     re_path('^$', index),
@@ -19,6 +20,6 @@ urlpatterns = [
     path('order_list/',order_list),
     re_path(r'set_order/(?P<states>\w+)/',set_order),
     re_path(r'order_result/',order_result),
-    path('delete_order/',delete_order)
+    path('delete_order/',delete_order),
 
 ]
