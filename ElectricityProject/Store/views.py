@@ -168,7 +168,7 @@ def goods_list(request,state):
     page = paginator.page(int(page_num))#第page_num页的内容
     page_range = paginator.page_range#获取页数范围
     page_totle = goods_list.count()#总页数
-    page_all = page_totle//3 if page_totle // 3 == 0 else page_totle // 3 +1 #求出所有页数
+    page_all = page_totle//4 if page_totle % 4 == 0 else page_totle // 4 +1 #求出所有页数
     list_goods = len(goods_list)#商品种类数
     if page_num == page_all:#判断下一页按钮的取值
         next_page = page_all
