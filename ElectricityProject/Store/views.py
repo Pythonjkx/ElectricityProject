@@ -316,5 +316,26 @@ def page404(request):
     return render(request,'store/page404.html')
 
 
+from rest_framework import viewsets
+from Store.serializers import *
+
+class UserViewSet(viewsets.ModelViewSet):
+
+    queryset = Goods.objects.all()#具体返回的数据
+    print(queryset)
+    serializer_class = UserSerializer#指定过滤的类
+
+
+
+class TypeViewSet(viewsets.ModelViewSet):
+    # 返回具体查询的内容
+    queryset = GoodsType.objects.all()
+    serializer_class = GoodsTypeSerializer
+
+def api_request(request):
+
+    return render(request,'store/api_request.html')
+
+
 
 

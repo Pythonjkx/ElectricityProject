@@ -16,10 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include,re_path
 from Buyer.views import index
+from Store.models import Goods
+from Store.models import GoodsType
+from rest_framework import routers
+from Store.views import *
+
+
+router = routers.DefaultRouter() #声明一个默认的路由注册器
+router.register(r'goods',UserViewSet)#注册写好的接口视图
+router.register(r'goodsType',TypeViewSet)#注册写好的接口视图
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('Store/',include('Store.urls')),
     path('Buyer/',include('Buyer.urls')),
+    re_path(r'^API',include(router.urls)), #restful 根路由
+    re_path(r'^api-auth',include('rest_framework.urls')),#接口认证
     path('ckeditor/',include('ckeditor_uploader.urls')),
 ]
 urlpatterns +=[

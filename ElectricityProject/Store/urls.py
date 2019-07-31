@@ -21,5 +21,6 @@ urlpatterns = [
     re_path(r'set_order/(?P<states>\w+)/',set_order),
     re_path(r'order_result/',order_result),
     path('delete_order/',delete_order),
+    path('api_request/',api_request)
 
 ]
