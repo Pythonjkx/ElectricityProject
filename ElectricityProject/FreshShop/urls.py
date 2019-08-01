@@ -36,4 +36,5 @@ urlpatterns = [
 ]
 urlpatterns +=[
     re_path(r'^$',index),
+
 ]

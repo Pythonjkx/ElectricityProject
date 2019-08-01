@@ -317,13 +317,17 @@ def page404(request):
 
 
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
 from Store.serializers import *
+
 
 class UserViewSet(viewsets.ModelViewSet):
 
     queryset = Goods.objects.all()#具体返回的数据
     print(queryset)
     serializer_class = UserSerializer#指定过滤的类
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['goods_name','goods_price']
 
 
 
@@ -336,6 +340,13 @@ def api_request(request):
 
     return render(request,'store/api_request.html')
 
+from django.core.mail import send_mail
+def sendMail(request):
+    send_mail('邮件主题','邮件内容','from_email',['to_email'],fail_silently=False)
 
+from CeleryTask.tasks import add
+def get_add(request):
+    add.delay(100,200)
+    return JsonResponse({'status':200})
 
 
