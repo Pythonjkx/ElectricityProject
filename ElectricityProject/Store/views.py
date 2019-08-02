@@ -324,7 +324,6 @@ from Store.serializers import *
 class UserViewSet(viewsets.ModelViewSet):
 
     queryset = Goods.objects.all()#具体返回的数据
-    print(queryset)
     serializer_class = UserSerializer#指定过滤的类
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['goods_name','goods_price']
@@ -344,9 +343,19 @@ from django.core.mail import send_mail
 def sendMail(request):
     send_mail('邮件主题','邮件内容','from_email',['to_email'],fail_silently=False)
 
-from CeleryTask.tasks import add
+from CeleryTask.tasks import add,DingTalk
 def get_add(request):
     add.delay(100,200)
     return JsonResponse({'status':200})
 
+def Ding(request):
+    add.delay(100,200)
+    return JsonResponse({'status':200})
+
+def get(request):
+
+    return JsonResponse({'status':200})
+
+def j(request):
+    raise TypeError('哈哈哈')
 

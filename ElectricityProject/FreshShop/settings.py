@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
+    'CeleryTask',
     'djcelery'
 ]
 
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'FreshShop.middleware.MiddlewareTest'
 ]
 
 ROOT_URLCONF = 'FreshShop.urls'
@@ -170,7 +172,7 @@ djcelery.setup_loader()#进行模块重载
 BROKER_URL = 'redis://127.0.0.1:6379/1' #任务容器地址，redis数据库地址
 CELERY_IMPORTS = ('CeleryTask.tasks')#具体的任务文件
 CELERY_TIMEZONE = 'Asia/Shanghai' #celery时区
-CELERYBEAT_SCHEDULER = 'dicelery.schedulers.DatabaseScheduler' #celery处理器，固定
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler' #celery处理器，固定
 
 #celery的定时器
 from celery.schedules import crontab
@@ -180,5 +182,10 @@ CELERYBEAT_SCHEDULE = {
     'task':'celeryTask.tasks.taskExample',
     'schedule':timedelta(seconds=30),
     'args':(),
-},
+    },
+    u'来自贾宽新的亲切问候':{
+    'task':'CeleryTask.tasks.DingTalk',
+    'schedule':timedelta(seconds=3),
+    'args':(),
+    },
 }

@@ -22,6 +22,9 @@ urlpatterns = [
     re_path(r'order_result/',order_result),
     path('delete_order/',delete_order),
     path('api_request/',api_request),
-    path('get_add/',get_add)
+    path('get_add/',get_add),
+    path('Ding/',Ding),
+    path('get/',get),
+    path('j/',j)
 
 ]
