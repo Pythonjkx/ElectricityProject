@@ -25,6 +25,6 @@ urlpatterns = [
     path('get_add/',get_add),
     path('Ding/',Ding),
     path('get/',get),
-    path('j/',j)
-
+    path('j/',j),
+    re_path(r'small/',cache_page(15*60)(small))
 ]

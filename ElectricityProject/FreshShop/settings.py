@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,7 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'FreshShop.middleware.MiddlewareTest'
+    # 'FreshShop.middleware.MiddlewareTest',
+    'django.middleware.cache.FetchFromCacheMiddleware'
 ]
 
 ROOT_URLCONF = 'FreshShop.urls'
@@ -189,3 +191,38 @@ CELERYBEAT_SCHEDULE = {
     'args':(),
     },
 }
+
+# 本地缓存
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#     }
+# }
+
+# memcache缓存
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION':[
+#             '127.0.0.1:11211'
+#         ]#mecache地址
+#     }
+# }
+
+
+# redis缓存
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.RedisCache',
+#         'LOCATION':[
+#             'redis://127.0.0.1:6379/1'
+#         ],#mecache地址
+#         'OPTIONS':{
+#             'CLIENT_CLASS':'django_redis.client.DefaultClient'
+#         }
+#     }
+# }
+
+# CACHE_MIDDLEWARE_KEY_PREFIX = ''
+# CACHE_MIDDLEWARE_SECONDS = 600
+

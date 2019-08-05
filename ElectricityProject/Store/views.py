@@ -4,7 +4,7 @@ from Store.models import * #导入数据模型
 from Buyer.models import *
 from django.shortcuts import render
 from django.core.paginator import Paginator #导入页码模块
-from django.http import HttpResponseRedirect,JsonResponse
+from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 
 # Create your views here.
 
@@ -359,3 +359,21 @@ def get(request):
 def j(request):
     raise TypeError('哈哈哈')
 
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+
+# @cache_page(60*10)#缓存寿命15分钟
+# def small(request):
+#     rep = HttpResponse('I am boy')
+#     return rep
+
+def small(request):
+    store_data = cache.get('store_data')
+    if store_data:
+        store_data = store_data
+    else:
+        data = Store.objects.all()
+        cache.get('store_data',data,30)
+        store_data = data
+
+    return render(request,'store/index.html',locals())
